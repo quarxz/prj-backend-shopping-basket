@@ -9,7 +9,7 @@ app.use(cors());
 
 const connect = require("./lib/connect");
 const { getProducts } = require("./controller/productController");
-const {} = require("./controller/userController");
+const { getUser, getUsers } = require("./controller/userController");
 
 app.get("/", async (req, res) => {
   await connect();
@@ -18,6 +18,12 @@ app.get("/", async (req, res) => {
   return res.status(200).json({ message: "Hallo from project shopping basket!" });
 });
 
+// Users
+app.get("/users", getUsers);
+app.get("/user/:user", getUser);
+// Get User POST -> Login
+app.post("/user/:user", getUser);
+// Products
 app.get("/products", getProducts);
 
 const server = app.listen(port, () => console.log(`Express app listening on port ${port}!`));
