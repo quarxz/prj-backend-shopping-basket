@@ -1,135 +1,146 @@
-[{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db21e"
+[
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db21e"
+    },
+    "category": "Electronics",
+    "top": false,
+    "timestamp": "2024-02-27T12:00:00Z",
+    "title": "Smartphone",
+    "description": "High-performance smartphone with advanced features.",
+    "stock": 50,
+    "price": 599.99,
+    "image": {
+      "url": "https://unsplash.com/photos/ywENHx0Z0L0",
+      "alt": "Smartphone"
+    }
   },
-  "category": "Electronics",
-  "timestamp": "2024-02-27T12:00:00Z",
-  "title": "Smartphone",
-  "description": "High-performance smartphone with advanced features.",
-  "stock": 50,
-  "price": 599.99,
-  "image": {
-    "url": "https://unsplash.com/photos/ywENHx0Z0L0",
-    "alt": "Smartphone"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db21f"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db21f"
+    },
+    "category": "Electronics",
+    "top": false,
+    "timestamp": "2024-02-26T10:30:00Z",
+    "title": "Wireless Headphones",
+    "description": "Premium wireless headphones with noise cancellation.",
+    "stock": 30,
+    "price": 149.99,
+    "image": {
+      "url": "https://unsplash.com/photos/AbpK8F7R6us",
+      "alt": "Wireless Headphones"
+    }
   },
-  "category": "Electronics",
-  "timestamp": "2024-02-26T10:30:00Z",
-  "title": "Wireless Headphones",
-  "description": "Premium wireless headphones with noise cancellation.",
-  "stock": 30,
-  "price": 149.99,
-  "image": {
-    "url": "https://unsplash.com/photos/AbpK8F7R6us",
-    "alt": "Wireless Headphones"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db220"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db220"
+    },
+    "category": "Electronics",
+    "top": false,
+    "timestamp": "2024-02-25T09:15:00Z",
+    "title": "Smartwatch",
+    "description": "Sleek smartwatch with fitness tracking and notifications.",
+    "stock": 20,
+    "price": 199.99,
+    "image": {
+      "url": "https://unsplash.com/photos/xuBgdzZGm1M",
+      "alt": "Smartwatch"
+    }
   },
-  "category": "Electronics",
-  "timestamp": "2024-02-25T09:15:00Z",
-  "title": "Smartwatch",
-  "description": "Sleek smartwatch with fitness tracking and notifications.",
-  "stock": 20,
-  "price": 199.99,
-  "image": {
-    "url": "https://unsplash.com/photos/xuBgdzZGm1M",
-    "alt": "Smartwatch"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db221"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db221"
+    },
+    "category": "Clothing",
+    "top": false,
+    "timestamp": "2024-02-26T14:45:00Z",
+    "title": "Men's Jacket",
+    "description": "Stylish and comfortable jacket for men.",
+    "stock": 100,
+    "price": 79.99,
+    "image": {
+      "url": "https://unsplash.com/photos/LwU7oU3i3M0",
+      "alt": "Men's Jacket"
+    }
   },
-  "category": "Clothing",
-  "timestamp": "2024-02-26T14:45:00Z",
-  "title": "Men's Jacket",
-  "description": "Stylish and comfortable jacket for men.",
-  "stock": 100,
-  "price": 79.99,
-  "image": {
-    "url": "https://unsplash.com/photos/LwU7oU3i3M0",
-    "alt": "Men's Jacket"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db222"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db222"
+    },
+    "category": "Clothing",
+    "top": false,
+    "timestamp": "2024-02-25T11:20:00Z",
+    "title": "Women's Dress",
+    "description": "Elegant dress for women suitable for various occasions.",
+    "stock": 80,
+    "price": 129.99,
+    "image": {
+      "url": "https://unsplash.com/photos/SaVZvlQTa3c",
+      "alt": "Women's Dress"
+    }
   },
-  "category": "Clothing",
-  "timestamp": "2024-02-25T11:20:00Z",
-  "title": "Women's Dress",
-  "description": "Elegant dress for women suitable for various occasions.",
-  "stock": 80,
-  "price": 129.99,
-  "image": {
-    "url": "https://unsplash.com/photos/SaVZvlQTa3c",
-    "alt": "Women's Dress"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db223"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db223"
+    },
+    "category": "Clothing",
+    "top": false,
+    "timestamp": "2024-02-24T08:00:00Z",
+    "title": "Sports Shoes",
+    "description": "Durable and comfortable sports shoes for active lifestyles.",
+    "stock": 120,
+    "price": 59.99,
+    "image": {
+      "url": "https://unsplash.com/photos/3rU4XKj6j5A",
+      "alt": "Sports Shoes"
+    }
   },
-  "category": "Clothing",
-  "timestamp": "2024-02-24T08:00:00Z",
-  "title": "Sports Shoes",
-  "description": "Durable and comfortable sports shoes for active lifestyles.",
-  "stock": 120,
-  "price": 59.99,
-  "image": {
-    "url": "https://unsplash.com/photos/3rU4XKj6j5A",
-    "alt": "Sports Shoes"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db224"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db224"
+    },
+    "category": "Home & Kitchen",
+    "top": false,
+    "timestamp": "2024-02-27T09:30:00Z",
+    "title": "Coffee Maker",
+    "description": "High-quality coffee maker with programmable features.",
+    "stock": 40,
+    "price": 89.99,
+    "image": {
+      "url": "https://unsplash.com/photos/4jdEwKzMMw4",
+      "alt": "Coffee Maker"
+    }
   },
-  "category": "Home & Kitchen",
-  "timestamp": "2024-02-27T09:30:00Z",
-  "title": "Coffee Maker",
-  "description": "High-quality coffee maker with programmable features.",
-  "stock": 40,
-  "price": 89.99,
-  "image": {
-    "url": "https://unsplash.com/photos/4jdEwKzMMw4",
-    "alt": "Coffee Maker"
-  }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db225"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db225"
+    },
+    "category": "Home & Kitchen",
+    "top": false,
+    "timestamp": "2024-02-26T13:10:00Z",
+    "title": "Knife Set",
+    "description": "Premium knife set for all kitchen cutting needs.",
+    "stock": 60,
+    "price": 69.99,
+    "image": {
+      "url": "https://unsplash.com/photos/UVBbzvRjeFw",
+      "alt": "Knife Set"
+    }
   },
-  "category": "Home & Kitchen",
-  "timestamp": "2024-02-26T13:10:00Z",
-  "title": "Knife Set",
-  "description": "Premium knife set for all kitchen cutting needs.",
-  "stock": 60,
-  "price": 69.99,
-  "image": {
-    "url": "https://unsplash.com/photos/UVBbzvRjeFw",
-    "alt": "Knife Set"
+  {
+    "_id": {
+      "$oid": "65e9c550ae1d1ae5918db226"
+    },
+    "category": "Home & Kitchen",
+    "top": false,
+    "timestamp": "2024-02-25T10:00:00Z",
+    "title": "Vacuum Cleaner",
+    "description": "Efficient vacuum cleaner for thorough cleaning of all surfaces.",
+    "stock": 35,
+    "price": 149.99,
+    "image": {
+      "url": "https://unsplash.com/photos/MrmJNAwxSpk",
+      "alt": "Vacuum Cleaner"
+    }
   }
-},
-{
-  "_id": {
-    "$oid": "65e9c550ae1d1ae5918db226"
-  },
-  "category": "Home & Kitchen",
-  "timestamp": "2024-02-25T10:00:00Z",
-  "title": "Vacuum Cleaner",
-  "description": "Efficient vacuum cleaner for thorough cleaning of all surfaces.",
-  "stock": 35,
-  "price": 149.99,
-  "image": {
-    "url": "https://unsplash.com/photos/MrmJNAwxSpk",
-    "alt": "Vacuum Cleaner"
-  }
-}]
+]
