@@ -11,6 +11,7 @@ const productSchema = new Schema(
     stock: { type: Number, required: false },
     price: { type: Number, required: false },
     top: { type: Boolean, required: false },
+    image: { url: { type: String }, alt: { type: String } },
   },
   { versionKey: false }
 );
