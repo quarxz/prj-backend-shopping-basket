@@ -5,7 +5,7 @@ const connect = require("../lib/connect");
 
 const getProducts = async (req, res) => {
   await connect();
-  const products = await Product.find().populate("category");
+  const products = await Product.find();
   if (!products.length) {
     return res.status(400).json({ message: "Could not find any Products!" });
   }
@@ -14,8 +14,10 @@ const getProducts = async (req, res) => {
     products.map((product) => ({
       ...product._doc,
       id: product._id,
-      categorie_id: product.category.id,
+      category_id: product.category._id,
       promoprice_10Percent: Number((product.price - (product.price / 100) * 10).toFixed(2)),
+      promoprice_30Percent: Number((product.price - (product.price / 100) * 30).toFixed(2)),
+      promoprice_50Percent: Number((product.price - (product.price / 100) * 50).toFixed(2)),
     }))
   );
 };
@@ -29,24 +31,25 @@ const getProduct = async (req, res) => {
       _id: null,
     };
     console.log(_id);
+
+    const product = await Product.findOne({ _id: productId }).populate("category");
+
+    if (!product) {
+      return res.status(400).json({ message: "Could not find this Product!" });
+    }
+
+    res.status(200).json({
+      ...product._doc,
+      id: product._id,
+      category_id: product.category.id,
+      promoprice_10Percent: Number((product.price - (product.price / 100) * 10).toFixed(2)),
+      promoprice_30Percent: Number((product.price - (product.price / 100) * 30).toFixed(2)),
+      promoprice_50Percent: Number((product.price - (product.price / 100) * 50).toFixed(2)),
+    });
   } catch (err) {
     console.log(err);
     return res.status(404).json({ message: "This Product does not Exists!" });
   }
-
-  const product = await Product.findOne({ _id: productId }).populate("category");
-
-  if (!product) {
-    return res.status(400).json({ message: "Could not find this Product!" });
-  }
-  // return res.status(200).json(product);
-
-  res.status(200).json({
-    ...product._doc,
-    id: product._id,
-    categorie_id: product.category.id,
-    promoprice_10Percent: Number((product.price - (product.price / 100) * 10).toFixed(2)),
-  });
 };
 
 module.exports = {
