@@ -10,7 +10,6 @@ const productSchema = new Schema(
     timestamp: { type: Date, required: true },
     stock: { type: Number, required: false },
     price: { type: Number, required: false },
-    promoprice_10Percent: { type: Number, required: false },
     top: { type: Boolean, required: false },
     image: { url: { type: String }, alt: { type: String } },
   },
