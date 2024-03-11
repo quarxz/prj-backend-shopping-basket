@@ -15,6 +15,7 @@ const getProducts = async (req, res) => {
       ...product._doc,
       id: product._id,
       categorie_id: product.category.id,
+      promoprice_10Percent: Number((product.price - (product.price / 100) * 10).toFixed(2)),
     }))
   );
 };
@@ -44,6 +45,7 @@ const getProduct = async (req, res) => {
     ...product._doc,
     id: product._id,
     categorie_id: product.category.id,
+    promoprice_10Percent: Number((product.price - (product.price / 100) * 10).toFixed(2)),
   });
 };
 

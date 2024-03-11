@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "65eec95b2d8accaeb6822a3c"
+  },
+  "name": "Clothing"
+},
+{
+  "_id": {
+    "$oid": "65eec99c2d8accaeb6822a3d"
+  },
+  "name": "Electronics"
+},
+{
+  "_id": {
+    "$oid": "65eec9b32d8accaeb6822a3e"
+  },
+  "name": "Home & Kitchen"
+}]
