@@ -10,6 +10,7 @@ app.use(cors());
 const connect = require("./lib/connect");
 const { getProducts, getProduct } = require("./controller/productController");
 const { getUsers, getUser } = require("./controller/userController");
+const { getCategories } = require("./controller/categoryController");
 
 app.get("/", async (req, res) => {
   await connect();
@@ -26,6 +27,8 @@ app.post("/user/:user", getUser);
 // Products
 app.get("/products", getProducts);
 app.get("/product/:productId", getProduct);
+// Categories
+app.get("/categories", getCategories);
 
 const server = app.listen(port, () => console.log(`Express app listening on port ${port}!`));
 
