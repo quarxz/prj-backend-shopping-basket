@@ -8,8 +8,8 @@ app.use(express.json());
 app.use(cors());
 
 const connect = require("./lib/connect");
-const { getProducts } = require("./controller/productController");
-const { getUser, getUsers } = require("./controller/userController");
+const { getProducts, getProduct } = require("./controller/productController");
+const { getUsers, getUser } = require("./controller/userController");
 
 app.get("/", async (req, res) => {
   await connect();
@@ -25,6 +25,7 @@ app.get("/user/:user", getUser);
 app.post("/user/:user", getUser);
 // Products
 app.get("/products", getProducts);
+app.get("/product/:productId", getProduct);
 
 const server = app.listen(port, () => console.log(`Express app listening on port ${port}!`));
 
