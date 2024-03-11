@@ -9,7 +9,7 @@ app.use(cors());
 
 const connect = require("./lib/connect");
 const { getProducts, getProduct } = require("./controller/productController");
-const { getUsers, getUser } = require("./controller/userController");
+const { getUsers, getUser, activatePromotion } = require("./controller/userController");
 const { getCategories } = require("./controller/categoryController");
 
 app.get("/", async (req, res) => {
@@ -22,8 +22,10 @@ app.get("/", async (req, res) => {
 // Users
 app.get("/users", getUsers);
 app.get("/user/:user", getUser);
+
 // Get User POST -> Login
 app.post("/user/:user", getUser);
+app.post("/user/:userId/activatepromotion", activatePromotion);
 // Products
 app.get("/products", getProducts);
 app.get("/product/:productId", getProduct);
