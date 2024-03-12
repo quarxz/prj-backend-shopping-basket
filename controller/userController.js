@@ -98,9 +98,109 @@ const deactivatePromotion = async (req, res) => {
   }
 };
 
+const userByProduct = async (req, res) => {
+  await connect();
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    const { productId, quantity } = req.body;
+
+    if (user && productId) {
+      const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
+
+      if (user.products.length) {
+        let obj = user.products.find((o) => o.productId);
+        if (obj.productId.toString() === isProductExists.toString()) {
+          return res.status(400).json({ message: "Book already bought!" });
+        }
+      }
+
+      const product = await Product.findOne({ _id: productId });
+
+      if (product.stock === 0) {
+        return res.status(400).json({ message: "Product is out of Stock!" });
+      }
+      if (product.stock < quantity) {
+        return res
+          .status(400)
+          .json({ message: "There are only " + product.stock + " left in stock" });
+      }
+      if (product.stock > 0) {
+        const productStockUpdate = await Product.findByIdAndUpdate(
+          { _id: productId },
+          { $inc: { stock: -quantity } }
+        );
+      }
+
+      const updateUser = await User.findByIdAndUpdate(
+        userId,
+        { $push: { products: { productId: productId, quantity: quantity } } },
+        { returnDocument: "after" }
+      );
+
+      return res.status(200).json(updateUser);
+    } else {
+      return res.status(400).json({
+        message: "Product NOT added. Product Id and/or User id is missing!",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ message: "Could not find user!" });
+  }
+};
+
+const userDeleteProduct = async (req, res) => {
+  await connect();
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+
+    const { productId, quantity } = req.body;
+
+    if (user && productId) {
+      const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
+
+      if (user.products.length) {
+        let obj = user.products.find((o) => o.productId);
+        if (quantity > obj.quantity) {
+          return res.status(400).json({ message: "Max to delete: " + obj.quantity });
+        }
+      }
+
+      const product = await Product.findOne({ _id: productId });
+
+      const productStockUpdate = await Product.findByIdAndUpdate(
+        { _id: productId },
+        { $inc: { stock: +quantity } }
+      );
+
+      const updateUser = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { products: { productId: productId } } },
+        { returnDocument: "after" }
+      );
+
+      return res.status(200).json(updateUser);
+    } else {
+      return res.status(400).json({
+        message: "Product NOT deleted. Product Id and/or User id is missing!",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ message: "Could not find user!" });
+  }
+};
+
 module.exports = {
   getUsers,
   getUser,
   activatePromotion,
   deactivatePromotion,
+  userByProduct,
+  userDeleteProduct,
 };

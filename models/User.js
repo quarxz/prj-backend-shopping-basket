@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Product = require("./Product");
 
 const { Schema } = mongoose;
 
@@ -8,6 +9,12 @@ const userSchema = new Schema(
     name: { type: String, required: false },
     password: { type: String, required: false },
     promotion: { type: Boolean, required: false },
+    products: [
+      {
+        productId: { type: Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, required: true },
+      },
+    ],
   },
   { versionKey: false }
 );
