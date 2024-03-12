@@ -41,7 +41,7 @@ const getProduct = async (req, res) => {
     res.status(200).json({
       ...product._doc,
       id: product._id,
-      category_id: product.category.id,
+      category_id: product.category._id,
       promoprice_10Percent: Number((product.price - (product.price / 100) * 10).toFixed(2)),
       promoprice_30Percent: Number((product.price - (product.price / 100) * 30).toFixed(2)),
       promoprice_50Percent: Number((product.price - (product.price / 100) * 50).toFixed(2)),
