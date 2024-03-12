@@ -26,18 +26,20 @@ const getUser = async (req, res) => {
     password,
     name,
     promotion,
+    products,
   } = (await User.findOne(userEmail === null ? { _id: user } : { email: userEmail })) || {
     _id: null,
     email: null,
     password: null,
     name: null,
     promotion: null,
+    products: null,
   };
 
   if (!userId) {
     return res.status(404).json({ message: "User not found" });
   }
-  return res.status(200).json({ id: userId, email, password, name, promotion });
+  return res.status(200).json({ id: userId, email, password, name, promotion, products });
 };
 
 const activatePromotion = async (req, res) => {
