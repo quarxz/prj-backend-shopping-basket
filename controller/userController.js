@@ -39,6 +39,7 @@ const getUser = async (req, res) => {
   if (!userId) {
     return res.status(404).json({ message: "User not found" });
   }
+
   return res.status(200).json({ id: userId, email, password, name, promotion, products });
 };
 
@@ -113,9 +114,11 @@ const userByProduct = async (req, res) => {
       const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
 
       if (user.products.length) {
-        let obj = user.products.find((o) => o.productId);
-        if (obj.productId.toString() === isProductExists.toString()) {
-          return res.status(400).json({ message: "Book already bought!" });
+        for (let i = 0; i < user.products.length; i++) {
+          let el = user.products[i].productId;
+          if (el.toString() === isProductExists.toString()) {
+            return res.status(400).json({ message: "Book already bought!" });
+          }
         }
       }
 
@@ -167,9 +170,13 @@ const userDeleteProduct = async (req, res) => {
       const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
 
       if (user.products.length) {
-        let obj = user.products.find((o) => o.productId);
-        if (quantity > obj.quantity) {
-          return res.status(400).json({ message: "Max to delete: " + obj.quantity });
+        for (let i = 0; i < user.products.length; i++) {
+          let el = user.products[i];
+          if (el.productId.toString() === isProductExists.toString()) {
+            if (quantity > el.quantity) {
+              return res.status(400).json({ message: "Max to delete: " + el.quantity });
+            }
+          }
         }
       }
 
