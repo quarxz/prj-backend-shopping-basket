@@ -170,7 +170,17 @@ const userDeleteProduct = async (req, res) => {
     if (user && productId) {
       const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
 
-      const product = await Product.findOne({ _id: productId });
+      // const product = await Product.findOne({ _id: productId });
+
+      // if (user.products.length) {
+      //   user.products.map(async (product) => {
+      //     if (product.toString() === isProductExists.toString()) {
+      //       if (quantity > el.quantity) {
+      //         return res.status(400).json({ message: "Max to delete: " + el.quantity });
+      //       }
+      //     }
+      //   });
+      // }
 
       const productStockUpdate = await Product.findByIdAndUpdate(
         { _id: productId },
@@ -193,15 +203,19 @@ const userDeleteProduct = async (req, res) => {
 
       user.products.map(async (product) => {
         if (product.productId.toString() === productId.toString()) {
+          console.log(product.productId.toString());
+          console.log(productId.toString());
           if (product.quantity >= 1) {
             // Update if basket quantity > want to delete quantity
             const updateUserProduct = await User.findOneAndUpdate(
               { _id: userId },
               { $inc: { "products.$[filter].quantity": -quantity } },
               { arrayFilters: [{ "filter.productId": productId }] },
-              { returnDocument: "after" }
+              { returnNewDocument: true }
             );
+
             // Update if basket quantity = 0 after want to delete
+            // komplett löschen
             const { products } = await User.findOne({ _id: userId });
             products.map(async (product) => {
               if (product.productId.toString() === productId.toString()) {
@@ -209,16 +223,28 @@ const userDeleteProduct = async (req, res) => {
                   const updateUser = await User.findByIdAndUpdate(
                     userId,
                     { $pull: { products: { productId: productId } } },
-                    { returnDocument: "after" },
                     { returnNewDocument: true }
                   );
-                  return res.status(200).json(updateUser);
+                  console.log("Delete complete: ", productId);
                 }
               }
             });
+            // const updatedUser = await User.findOne({ _id: userId });
+            // console.log("235:", updatedUser.products);
           }
+          const updatedUser = await User.findOne({ _id: userId });
+          console.log("#2:", updatedUser.products);
+          return res.status(200).json(updatedUser);
         }
       });
+      // const updatedUser = await User.findOne({ _id: userId });
+      // console.log("#1:", updatedUser.products);
+      // return res.status(200).json(updatedUser);
+      // return res.status(200).json({ message: "stop" });
+      /**
+       *
+       *
+       */
     } else {
       return res.status(400).json({
         message: "Product NOT deleted. Product Id and/or User id is missing!",
