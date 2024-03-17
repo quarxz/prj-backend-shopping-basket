@@ -12,7 +12,7 @@ const userSchema = new Schema(
     products: [
       {
         productId: { type: Schema.Types.ObjectId, ref: "Product" },
-        quantity: { type: Number, required: true },
+        quantity: { type: Number, required: false },
       },
     ],
   },
