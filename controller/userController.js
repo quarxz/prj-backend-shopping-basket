@@ -19,24 +19,18 @@ const getUser = async (req, res) => {
   try {
     const { user: userId } = req.params;
     await connect();
-    const userEmail = userId.match(
-      /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi
-    );
+    const userEmail = userId.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
 
     const criteria = userEmail ? { email: userEmail } : { _id: userId };
 
-    const user = await User.findOne(criteria).populate("products.productId");
-
-    // if (!userId) {
-    //   return res.status(404).json({ message: "User not found" });
-    // }
+    const user = await User.findOne(criteria).populate("products.product");
 
     // return res.status(200).json({ id: userId, email, password, name, promotion, products });
     const { _id, ...rest } = user._doc;
     return res.status(200).json({ ...rest, id: _id });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "User not found!" });
   }
 };
 
@@ -114,11 +108,9 @@ const userByProduct = async (req, res) => {
 
       if (user.products.length) {
         for (let i = 0; i < user.products.length; i++) {
-          let el = user.products[i].productId;
+          let el = user.products[i].product;
           if (el.toString() === isProductExists.toString()) {
-            return res
-              .status(400)
-              .json({ message: "Produkt already in basket!" });
+            return res.status(400).json({ message: "Produkt already in basket!" });
           }
         }
       }
@@ -142,11 +134,11 @@ const userByProduct = async (req, res) => {
 
       const updateUser = await User.findByIdAndUpdate(
         userId,
-        { $push: { products: { productId: productId, quantity: quantity } } },
+        { $push: { products: { product: productId, quantity: quantity } } },
         { returnDocument: "after" }
       );
 
-      return res.status(200).json(updateUser);
+      return res.status(200).json({ message: "Product has been added!" });
     } else {
       return res.status(400).json({
         message: "Product NOT added. Product Id and/or User id is missing!",
@@ -205,15 +197,17 @@ const userDeleteProduct = async (req, res) => {
       // const updateUser = await User.find({ userId: userId });
 
       user.products.map(async (product) => {
-        if (product.productId.toString() === productId.toString()) {
-          console.log(product.productId.toString());
+        if (product.product.toString() === productId.toString()) {
+          console.log(product.product.toString());
           console.log(productId.toString());
+
           if (product.quantity >= 1) {
+            console.log(product.quantity);
             // Update if basket quantity > want to delete quantity
             const updateUserProduct = await User.findOneAndUpdate(
               { _id: userId },
               { $inc: { "products.$[filter].quantity": -quantity } },
-              { arrayFilters: [{ "filter.productId": productId }] },
+              { arrayFilters: [{ "filter.product": productId }] },
               { returnNewDocument: true }
             );
 
@@ -221,11 +215,11 @@ const userDeleteProduct = async (req, res) => {
             // komplett löschen
             const { products } = await User.findOne({ _id: userId });
             products.map(async (product) => {
-              if (product.productId.toString() === productId.toString()) {
+              if (product.product.toString() === productId.toString()) {
                 if (product.quantity < 1) {
                   const updateUser = await User.findByIdAndUpdate(
                     userId,
-                    { $pull: { products: { productId: productId } } },
+                    { $pull: { products: { product: productId } } },
                     { returnNewDocument: true }
                   );
                   console.log("Delete complete: ", productId);

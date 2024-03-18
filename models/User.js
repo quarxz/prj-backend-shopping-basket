@@ -11,7 +11,7 @@ const userSchema = new Schema(
     promotion: { type: Boolean, required: false },
     products: [
       {
-        productId: { type: Schema.Types.ObjectId, ref: "Product" },
+        product: { type: Schema.Types.ObjectId, ref: "Product" },
         quantity: { type: Number, required: false },
       },
     ],
