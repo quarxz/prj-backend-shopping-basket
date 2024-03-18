@@ -20,27 +20,19 @@ const getUser = async (req, res) => {
   const { user } = req.params;
   const userEmail = user.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
 
-  const {
-    _id: userId,
-    email,
-    password,
-    name,
-    promotion,
-    products,
-  } = (await User.findOne(userEmail === null ? { _id: user } : { email: userEmail })) || {
-    _id: null,
-    email: null,
-    password: null,
-    name: null,
-    promotion: null,
-    products: null,
-  };
+  const product = (
+    await User.findOne(userEmail === null ? { _id: user } : { email: userEmail })
+  ).populate({
+    path: "products",
+    populate: { path: "productId", model: "Product" },
+  });
 
-  if (!userId) {
-    return res.status(404).json({ message: "User not found" });
-  }
+  // if (!userId) {
+  //   return res.status(404).json({ message: "User not found" });
+  // }
 
-  return res.status(200).json({ id: userId, email, password, name, promotion, products });
+  // return res.status(200).json({ id: userId, email, password, name, promotion, products });
+  return res.status(200).json(product);
 };
 
 const activatePromotion = async (req, res) => {
@@ -229,22 +221,12 @@ const userDeleteProduct = async (req, res) => {
                 }
               }
             });
-            // const updatedUser = await User.findOne({ _id: userId });
-            // console.log("235:", updatedUser.products);
           }
           const updatedUser = await User.findOne({ _id: userId });
           console.log("#2:", updatedUser.products);
           return res.status(200).json(updatedUser);
         }
       });
-      // const updatedUser = await User.findOne({ _id: userId });
-      // console.log("#1:", updatedUser.products);
-      // return res.status(200).json(updatedUser);
-      // return res.status(200).json({ message: "stop" });
-      /**
-       *
-       *
-       */
     } else {
       return res.status(400).json({
         message: "Product NOT deleted. Product Id and/or User id is missing!",
