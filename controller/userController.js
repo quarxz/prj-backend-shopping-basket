@@ -16,23 +16,28 @@ const getUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  await connect();
-  const { user } = req.params;
-  const userEmail = user.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+  try {
+    const { user: userId } = req.params;
+    await connect();
+    const userEmail = userId.match(
+      /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi
+    );
 
-  const product = (
-    await User.findOne(userEmail === null ? { _id: user } : { email: userEmail })
-  ).populate({
-    path: "products",
-    populate: { path: "productId", model: "Product" },
-  });
+    const criteria = userEmail ? { email: userEmail } : { _id: userId };
 
-  // if (!userId) {
-  //   return res.status(404).json({ message: "User not found" });
-  // }
+    const user = await User.findOne(criteria).populate("products.productId");
 
-  // return res.status(200).json({ id: userId, email, password, name, promotion, products });
-  return res.status(200).json(product);
+    // if (!userId) {
+    //   return res.status(404).json({ message: "User not found" });
+    // }
+
+    // return res.status(200).json({ id: userId, email, password, name, promotion, products });
+    const { _id, ...rest } = user._doc;
+    return res.status(200).json({ ...rest, id: _id });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
+  }
 };
 
 const activatePromotion = async (req, res) => {
@@ -103,13 +108,17 @@ const userByProduct = async (req, res) => {
     const { productId, quantity } = req.body;
 
     if (user && productId) {
-      const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
+      const { _id: isProductExists } = (await Product.findOne({
+        _id: productId,
+      })) || { _id: null };
 
       if (user.products.length) {
         for (let i = 0; i < user.products.length; i++) {
           let el = user.products[i].productId;
           if (el.toString() === isProductExists.toString()) {
-            return res.status(400).json({ message: "Produkt already in basket!" });
+            return res
+              .status(400)
+              .json({ message: "Produkt already in basket!" });
           }
         }
       }
@@ -120,9 +129,9 @@ const userByProduct = async (req, res) => {
         return res.status(400).json({ message: "Product is out of Stock!" });
       }
       if (product.stock < quantity) {
-        return res
-          .status(400)
-          .json({ message: "There are only " + product.stock + " left in stock" });
+        return res.status(400).json({
+          message: "There are only " + product.stock + " left in stock",
+        });
       }
       if (product.stock > 0) {
         const productStockUpdate = await Product.findByIdAndUpdate(
@@ -160,7 +169,9 @@ const userDeleteProduct = async (req, res) => {
     console.log(quantity);
 
     if (user && productId) {
-      const { _id: isProductExists } = (await Product.findOne({ _id: productId })) || { _id: null };
+      const { _id: isProductExists } = (await Product.findOne({
+        _id: productId,
+      })) || { _id: null };
 
       // const product = await Product.findOne({ _id: productId });
 
