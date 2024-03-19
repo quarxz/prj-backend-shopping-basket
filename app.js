@@ -14,7 +14,7 @@ const {
   getUser,
   activatePromotion,
   deactivatePromotion,
-  userByProduct,
+  userAddProduct,
   userDeleteProduct,
 } = require("./controller/userController");
 const { getCategories } = require("./controller/categoryController");
@@ -28,20 +28,20 @@ app.get("/", async (req, res) => {
 
 // Users
 app.get("/users", getUsers);
-app.get("/user/:user", getUser);
+app.get("/users/:user", getUser);
 
 // Get User POST -> Login
-app.post("/user/:user", getUser);
-app.post("/user/:userId/buy", userByProduct);
-app.post("/user/:userId/delete", userDeleteProduct);
+app.post("/users/:user", getUser);
+app.post("/users/:userId/add", userAddProduct);
+app.post("/users/:userId/delete", userDeleteProduct);
 // Shopping Basket
 // app.post("/shoppingbasket/:user", userByProduct);
 // promotion
-app.post("/user/:userId/activatepromotion", activatePromotion);
-app.post("/user/:userId/deactivatepromotion", deactivatePromotion);
+app.post("/users/:userId/activatepromotion", activatePromotion);
+app.post("/users/:userId/deactivatepromotion", deactivatePromotion);
 // Products
 app.get("/products", getProducts);
-app.get("/product/:productId", getProduct);
+app.get("/products/:productId", getProduct);
 
 // Categories
 app.get("/categories", getCategories);
