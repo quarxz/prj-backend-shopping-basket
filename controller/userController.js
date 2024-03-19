@@ -92,7 +92,7 @@ const deactivatePromotion = async (req, res) => {
   }
 };
 
-const userByProduct = async (req, res) => {
+const userAddProduct = async (req, res) => {
   await connect();
   const { userId } = req.params;
 
@@ -105,15 +105,6 @@ const userByProduct = async (req, res) => {
       const { _id: isProductExists } = (await Product.findOne({
         _id: productId,
       })) || { _id: null };
-
-      if (user.products.length) {
-        for (let i = 0; i < user.products.length; i++) {
-          let el = user.products[i].product;
-          if (el.toString() === isProductExists.toString()) {
-            return res.status(400).json({ message: "Produkt already in basket!" });
-          }
-        }
-      }
 
       const product = await Product.findOne({ _id: productId });
 
@@ -130,6 +121,23 @@ const userByProduct = async (req, res) => {
           { _id: productId },
           { $inc: { stock: -quantity } }
         );
+      }
+
+      if (user.products.length) {
+        for (let i = 0; i < user.products.length; i++) {
+          let el = user.products[i].product;
+          if (el.toString() === isProductExists.toString()) {
+            const updateUserProduct = await User.findOneAndUpdate(
+              { _id: userId },
+              { $inc: { "products.$[filter].quantity": +quantity } },
+              { arrayFilters: [{ "filter.product": productId }] },
+              { returnNewDocument: true }
+            );
+
+            // return res.status(400).json({ message: "Produkt already in basket!" });
+            return res.status(200).json({ message: "Produkt is updated in basket!" });
+          }
+        }
       }
 
       const updateUser = await User.findByIdAndUpdate(
@@ -248,6 +256,6 @@ module.exports = {
   getUser,
   activatePromotion,
   deactivatePromotion,
-  userByProduct,
+  userAddProduct,
   userDeleteProduct,
 };
