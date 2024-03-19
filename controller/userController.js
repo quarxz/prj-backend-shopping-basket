@@ -126,7 +126,8 @@ const userAddProduct = async (req, res) => {
       if (user.products.length) {
         for (let i = 0; i < user.products.length; i++) {
           let el = user.products[i].product;
-          if (el.toString() === isProductExists.toString()) {
+          // if (el.toString() === isProductExists.toString()) {
+          if (el.equals(isProductExists)) {
             const updateUserProduct = await User.findOneAndUpdate(
               { _id: userId },
               { $inc: { "products.$[filter].quantity": +quantity } },
@@ -205,7 +206,8 @@ const userDeleteProduct = async (req, res) => {
       // const updateUser = await User.find({ userId: userId });
 
       user.products.map(async (product) => {
-        if (product.product.toString() === productId.toString()) {
+        // if (product.product.toString() === productId.toString()) {
+        if (product.product.equals(productId)) {
           console.log(product.product.toString());
           console.log(productId.toString());
 
@@ -223,7 +225,8 @@ const userDeleteProduct = async (req, res) => {
             // komplett löschen
             const { products } = await User.findOne({ _id: userId });
             products.map(async (product) => {
-              if (product.product.toString() === productId.toString()) {
+              // if (product.product.toString() === productId.toString()) {
+              if (product.product.equals(productId)) {
                 if (product.quantity < 1) {
                   const updateUser = await User.findByIdAndUpdate(
                     userId,
