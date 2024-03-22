@@ -26,8 +26,37 @@ const getUser = async (req, res) => {
     const user = await User.findOne(criteria).populate("products.product");
 
     // return res.status(200).json({ id: userId, email, password, name, promotion, products });
-    const { _id, ...rest } = user._doc;
-    return res.status(200).json({ ...rest, id: _id });
+    const arr = Array();
+    let basket_total = 0;
+    user.products.map((item) => {
+      const product_total = item.product.price * item.quantity;
+      arr.push(product_total);
+      basket_total = arr.reduce((acc, curr) => {
+        return acc + curr;
+      }, 0);
+    });
+
+    const { _id, products, ...rest } = user._doc;
+    // console.log(
+    //   user._doc.products.map((item) => {
+    //     return { ...item._doc, quantity: item.quantity };
+    //   })
+    // );
+    return res.status(200).json({
+      ...rest,
+      id: _id,
+      basket_total: basket_total,
+      basket_total_discount: user.promotion ? (basket_total / 100) * 10 : 0,
+      basket_total_promotion: user.promotion ? basket_total - (basket_total / 100) * 10 : 0,
+      products: products.map((cartItem) => {
+        console.log(cartItem._doc.product.price);
+        return {
+          ...cartItem._doc,
+          quantity: cartItem.quantity,
+          product_total: cartItem.quantity * cartItem._doc.product.price,
+        };
+      }),
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "User not found!" });
@@ -227,7 +256,7 @@ const userDeleteProduct = async (req, res) => {
             products.map(async (product) => {
               // if (product.product.toString() === productId.toString()) {
               if (product.product.equals(productId)) {
-                if (product.quantity < 1) {
+                if (product.quantity < 1 || product.quantity === 0) {
                   const updateUser = await User.findByIdAndUpdate(
                     userId,
                     { $pull: { products: { product: productId } } },
@@ -238,9 +267,23 @@ const userDeleteProduct = async (req, res) => {
               }
             });
           }
-          const updatedUser = await User.findOne({ _id: userId });
+          const updatedUser = await User.findOne({ _id: userId }).populate("products.product");
           console.log("#2:", updatedUser.products);
-          return res.status(200).json(updatedUser);
+
+          const arr = Array();
+          let basket_total = 0;
+          updatedUser.products.map((item) => {
+            const product_total = item.product.price * item.quantity;
+            arr.push(product_total);
+            basket_total = arr.reduce((acc, curr) => {
+              return acc + curr;
+            }, 0);
+          });
+
+          const { ...rest } = updatedUser._doc;
+          return res
+            .status(200)
+            .json({ ...rest, basket_total, message: "Product has been deleted!" });
         }
       });
     } else {
